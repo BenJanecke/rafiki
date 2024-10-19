@@ -195,7 +195,7 @@ async function createPendingGrant(
     const interaction = await interactionService.create(grant.id, trx)
     await trx.commit()
 
-    // TODO: brett interaction.id + interaction.grant ussd
+    // TODO: brett interaction.id + interaction.nonce ussd
 
     ctx.status = 200
     ctx.body = toOpenPaymentPendingGrant(grant, interaction, {

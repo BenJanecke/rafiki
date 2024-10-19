@@ -1,13 +1,13 @@
 services:
-  stokvel-admin:
+  mfa-admin:
     environment:
       AUTH_ENABLED: true
-      KRATOS_CONTAINER_PUBLIC_URL: 'http://stokvel-kratos:4433'
+      KRATOS_CONTAINER_PUBLIC_URL: 'http://mfa-kratos:4433'
       KRATOS_BROWSER_PUBLIC_URL: 'http://localhost:4433'
-      KRATOS_ADMIN_URL: 'http://stokvel-kratos:4434/admin'
+      KRATOS_ADMIN_URL: 'http://mfa-kratos:4434/admin'
     depends_on:
-      - stokvel-wallet-backend
-      - stokvel-kratos
+      - mfa-wallet-backend
+      - mfa-kratos
 
   happy-life-admin:
     environment:
@@ -16,16 +16,16 @@ services:
       KRATOS_BROWSER_PUBLIC_URL: 'http://localhost:4432'
       KRATOS_ADMIN_URL: 'http://happy-life-kratos:4434/admin'
     depends_on:
-      - stokvel-admin
+      - mfa-admin
       - happy-life-backend
       - happy-life-kratos
 
-  stokvel-kratos:
+  mfa-kratos:
     build:
       context: ../..
       dockerfile: ./packages/frontend/kratos/Dockerfile
       args:
-        PATH_TO_KRATOS_CONFIG: ./localenv/admin-auth/stokvel-kratos.yml
+        PATH_TO_KRATOS_CONFIG: ./localenv/admin-auth/mfa-kratos.yml
     depends_on:
       - shared-database
       - mailslurper

@@ -1,7 +1,7 @@
-name: stokvel-test
+name: mfa-test
 services:
-  stokvel-test-backend:
-    hostname: stokvel-test-backend
+  mfa-test-backend:
+    hostname: mfa-test-backend
     image: rafiki-backend
     pull_policy: never
     restart: always
@@ -18,19 +18,19 @@ services:
       NODE_ENV: development
       LOG_LEVEL: debug
       INSTANCE_NAME: 'Happy Life Test'
-      OPEN_PAYMENTS_URL: https://stokvel-test-backend:4100
-      WALLET_ADDRESS_URL: https://stokvel-test-backend:4100/.well-known/pay
+      OPEN_PAYMENTS_URL: https://mfa-test-backend:4100
+      WALLET_ADDRESS_URL: https://mfa-test-backend:4100/.well-known/pay
       ADMIN_PORT: 4101
       CONNECTOR_PORT: 4102
       OPEN_PAYMENTS_PORT: 4100
       DATABASE_URL: postgresql://happy_life_bank_test_backend:happy_life_bank_test_backend@shared-database/happy_life_bank_test_backend
-      AUTH_SERVER_GRANT_URL: http://stokvel-test-auth:4106
-      AUTH_SERVER_INTROSPECTION_URL: http://stokvel-test-auth:4107
+      AUTH_SERVER_GRANT_URL: http://mfa-test-auth:4106
+      AUTH_SERVER_INTROSPECTION_URL: http://mfa-test-auth:4107
       # matches pfry key id
       KEY_ID: keyid-97a3a431-8ee1-48fc-ac85-70e2f5eba8e5
       PRIVATE_KEY_FILE: /workspace/private-key.pem
-      ILP_ADDRESS: test.stokvel-test
-      ILP_CONNECTOR_URL: http://stokvel-test-backend:4102
+      ILP_ADDRESS: test.mfa-test
+      ILP_CONNECTOR_URL: http://mfa-test-backend:4102
       STREAM_SECRET: BjPXtnd00G2mRQwP/8ZpwyZASOch5sUXT5o0iR5b5wU=
       WEBHOOK_URL: http://host.docker.internal:8889/webhooks
       EXCHANGE_RATES_URL: http://host.docker.internal:8889/rates
@@ -46,7 +46,7 @@ services:
       retries: 10
       timeout: 3s
   happy-life-auth:
-    hostname: stokvel-test-auth
+    hostname: mfa-test-auth
     image: rafiki-auth
     pull_policy: never
     restart: always
@@ -60,8 +60,8 @@ services:
     environment:
       NODE_ENV: development
       AUTH_DATABASE_URL: postgresql://happy_life_bank_test_auth:happy_life_bank_test_auth@shared-database/happy_life_bank_test_auth
-      AUTH_SERVER_URL: http://stokvel-test-auth:4106
-      INTERACTION_SERVER: http://stokvel-test-auth:4109
+      AUTH_SERVER_URL: http://mfa-test-auth:4106
+      INTERACTION_SERVER: http://mfa-test-auth:4109
       INTERACTION_PORT: 4109
       INTROSPECTION_PORT: 4107
       ADMIN_PORT: 4103

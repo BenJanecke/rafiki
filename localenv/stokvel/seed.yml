@@ -18,8 +18,8 @@ assets:
 peeringAsset: 'USD'
 peers:
   - initialLiquidity: '10000000'
-    peerUrl: http://stokvel-wallet-backend:3002
-    peerIlpAddress: test.stokvel
+    peerUrl: http://mfa-wallet-backend:3002
+    peerIlpAddress: test.mfa
     liquidityThreshold: 1000000
 accounts:
   - name: 'Grace Franklin'

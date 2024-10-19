@@ -8,7 +8,7 @@ serve:
     cors:
       enabled: true
   admin:
-    base_url: http://stokvel:4434/
+    base_url: http://mfa:4434/
 
 selfservice:
   default_browser_return_url: http://localhost:4010/

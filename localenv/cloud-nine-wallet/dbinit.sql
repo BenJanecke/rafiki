@@ -22,14 +22,14 @@ CREATE DATABASE happy_life_bank_auth;
 
 ALTER DATABASE happy_life_bank_auth OWNER TO happy_life_bank_auth;
 
-CREATE USER stokvel_wallet_backend WITH PASSWORD 'stokvel_wallet_backend';
+CREATE USER mfa_wallet_backend WITH PASSWORD 'mfa_wallet_backend';
 
-CREATE DATABASE stokvel_wallet_backend;
+CREATE DATABASE mfa_wallet_backend;
 
-ALTER DATABASE stokvel_wallet_backend OWNER TO stokvel_wallet_backend;
+ALTER DATABASE mfa_wallet_backend OWNER TO mfa_wallet_backend;
 
-CREATE USER stokvel_wallet_auth WITH PASSWORD 'stokvel_wallet_auth';
+CREATE USER mfa_wallet_auth WITH PASSWORD 'mfa_wallet_auth';
 
-CREATE DATABASE stokvel_wallet_auth;
+CREATE DATABASE mfa_wallet_auth;
 
-ALTER DATABASE stokvel_wallet_auth OWNER TO stokvel_wallet_auth;
+ALTER DATABASE mfa_wallet_auth OWNER TO mfa_wallet_auth;

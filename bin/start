@@ -49,11 +49,11 @@ addHost "happy-life-bank-backend"
 addHost "happy-life-bank-auth"
 addHost "happy-life-bank-test-backend"
 addHost "happy-life-bank-test-auth"
-addHost "stokvel-wallet-test-backend"
-addHost "stokvel-wallet-test-auth"
-addHost "stokvel-wallet-backend"
-addHost "stokvel-wallet-auth"
+addHost "mfa-wallet-test-backend"
+addHost "mfa-wallet-test-auth"
+addHost "mfa-wallet-backend"
+addHost "mfa-wallet-auth"
 
 # idempotent start
-pnpm localenv:compose:stokvel down -v
-pnpm localenv:compose:stokvel up
+pnpm localenv:compose:mfa down -v
+pnpm localenv:compose:mfa up

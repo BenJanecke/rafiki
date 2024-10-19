@@ -1,20 +1,20 @@
-CREATE USER stokvel_wallet_backend WITH PASSWORD 'stokvel_wallet_backend';
+CREATE USER mfa_wallet_backend WITH PASSWORD 'mfa_wallet_backend';
 
-CREATE DATABASE stokvel_wallet_backend;
+CREATE DATABASE mfa_wallet_backend;
 
-ALTER DATABASE stokvel_wallet_backend OWNER TO stokvel_wallet_backend;
+ALTER DATABASE mfa_wallet_backend OWNER TO mfa_wallet_backend;
 
-CREATE USER stokvel_wallet_auth WITH PASSWORD 'stokvel_wallet_auth';
+CREATE USER mfa_wallet_auth WITH PASSWORD 'mfa_wallet_auth';
 
-CREATE DATABASE stokvel_wallet_auth;
+CREATE DATABASE mfa_wallet_auth;
 
-ALTER DATABASE stokvel_wallet_auth OWNER TO stokvel_wallet_auth;
+ALTER DATABASE mfa_wallet_auth OWNER TO mfa_wallet_auth;
 
-CREATE USER stokvel_kratos WITH PASSWORD 'kratos_password';
+CREATE USER mfa_kratos WITH PASSWORD 'kratos_password';
 
-CREATE DATABASE stokvel_kratos;
+CREATE DATABASE mfa_kratos;
 
-ALTER DATABASE stokvel_kratos OWNER TO stokvel_kratos;
+ALTER DATABASE mfa_kratos OWNER TO mfa_kratos;
 
 CREATE USER cloud_nine_wallet_backend WITH PASSWORD 'cloud_nine_wallet_backend';
 

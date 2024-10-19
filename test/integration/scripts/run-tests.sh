@@ -46,8 +46,8 @@ addHost "cloud-nine-wallet-test-backend"
 addHost "cloud-nine-wallet-test-auth"
 addHost "happy-life-bank-test-backend"
 addHost "happy-life-bank-test-auth"
-addHost "stokvel-test-backend"
-addHost "stokvel-test-auth"
+addHost "mfa-test-backend"
+addHost "mfa-test-auth"
 
 # idempotent start
 pnpm --filter integration testenv:compose down --volumes

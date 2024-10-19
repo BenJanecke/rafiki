@@ -13,6 +13,8 @@ exports.up = function (knex) {
     table.string('finishMethod')
     table.string('finishUri')
     table.string('clientNonce')
+
+    table.integer('approvalCount').notNullable().defaultTo(0)
     table.string('client').notNullable()
 
     table.string('interactId').unique()

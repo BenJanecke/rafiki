@@ -22,14 +22,14 @@ CREATE DATABASE happy_life_bank_test_auth;
 
 ALTER DATABASE happy_life_bank_test_auth OWNER TO happy_life_bank_test_auth;
 
-CREATE USER stokvel_test_backend WITH PASSWORD 'stokvel_test_backend';
+CREATE USER mfa_test_backend WITH PASSWORD 'mfa_test_backend';
 
-CREATE DATABASE stokvel_test_backend;
+CREATE DATABASE mfa_test_backend;
 
-ALTER DATABASE stokvel_test_backend OWNER TO stokvel_test_backend;
+ALTER DATABASE mfa_test_backend OWNER TO mfa_test_backend;
 
-CREATE USER stokvel_test_auth WITH PASSWORD 'stokvel_test_auth';
+CREATE USER mfa_test_auth WITH PASSWORD 'mfa_test_auth';
 
-CREATE DATABASE stokvel_test_auth;
+CREATE DATABASE mfa_test_auth;
 
-ALTER DATABASE stokvel_test_auth OWNER TO stokvel_test_auth;
+ALTER DATABASE mfa_test_auth OWNER TO mfa_test_auth;
