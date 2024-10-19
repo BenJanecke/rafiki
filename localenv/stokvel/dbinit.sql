@@ -33,3 +33,9 @@ CREATE USER stokvel_wallet_auth WITH PASSWORD 'stokvel_wallet_auth';
 CREATE DATABASE stokvel_wallet_auth;
 
 ALTER DATABASE stokvel_wallet_auth OWNER TO stokvel_wallet_auth;
+
+CREATE USER stokvel_kratos WITH PASSWORD 'kratos_password';
+
+CREATE DATABASE stokvel_kratos;
+
+ALTER DATABASE stokvel_kratos OWNER TO stokvel_kratos;

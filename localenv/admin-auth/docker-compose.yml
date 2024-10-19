@@ -6,7 +6,7 @@ services:
       KRATOS_BROWSER_PUBLIC_URL: 'http://localhost:4433'
       KRATOS_ADMIN_URL: 'http://stokvel-kratos:4434/admin'
     depends_on:
-      - stokvel-backend
+      - stokvel-wallet-backend
       - stokvel-kratos
 
   happy-life-admin:

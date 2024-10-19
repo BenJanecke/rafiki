@@ -18,7 +18,7 @@ assets:
 peeringAsset: 'USD'
 peers:
   - initialLiquidity: '10000000'
-    peerUrl: http://stokvel-backend:3002
+    peerUrl: http://stokvel-wallet-backend:3002
     peerIlpAddress: test.stokvel
     liquidityThreshold: 1000000
 accounts:

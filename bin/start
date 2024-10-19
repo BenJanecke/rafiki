@@ -35,6 +35,7 @@ addHost() {
   if pnpm --filter integration hostile list | grep -q "127.0.0.1 $hostname"; then
     echo "$hostname already set"
   else
+    echo "Ask: please provide sudo so we can add some hosts entries, view the file in bin/start to inspect why this is necessary"
     sudo pnpm --filter integration hostile set 127.0.0.1 "$hostname"
     if [ $? -ne 0 ]; then
       echo "Error: Failed to write hosts to hostfile."
@@ -50,18 +51,5 @@ addHost "stokvel-test-backend"
 addHost "stokvel-test-auth"
 
 # idempotent start
-pnpm --filter integration testenv:compose down --volumes
-pnpm --filter integration testenv:compose up -d --wait $build_flag
-if [ $? -ne 0 ]; then
-  echo "Error: Failed to start containers."
-  exit 1
-fi
-
-# run tests
-mkdir -p ./tmp
-pnpm --filter integration testenv:compose logs -f > "$log_file" 2>&1 &
-pnpm --filter integration test
-exit_code=$?
-pnpm --filter integration testenv:compose down --volumes
-
-exit $exit_code
+pnpm localenv:compose:stokvel down -v
+pnpm localenv:compose:stokvel up

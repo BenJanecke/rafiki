@@ -12,14 +12,14 @@ get {
 
 headers {
   Authorization: GNAP {{accessToken}}
-  ~Host: cloud-nine-wallet-backend
+  ~Host: stokvel-wallet-backend
 }
 
 script:pre-request {
   const scripts = require('./scripts');
-  
+
   scripts.addHostHeader();
-  
+
   await scripts.addSignatureHeaders();
 }
 
