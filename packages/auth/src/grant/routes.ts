@@ -192,17 +192,26 @@ async function createPendingGrant(
 
   try {
     const grant = await grantService.create(body, trx)
-    const interaction = await interactionService.create(grant.id, trx)
+    const [interaction, interaction2] = await Promise.all([
+      interactionService.create(grant.id, trx),
+      interactionService.create(grant.id, trx)
+    ])
+
     await trx.commit()
 
     // TODO: brett interaction.id + interaction.nonce ussd
 
     ctx.status = 200
-    ctx.body = toOpenPaymentPendingGrant(grant, interaction, {
-      client,
-      authServerUrl: config.authServerUrl,
-      waitTimeSeconds: config.waitTimeSeconds
-    })
+    ctx.body = toOpenPaymentPendingGrant(
+      grant,
+      interaction,
+      {
+        client,
+        authServerUrl: config.authServerUrl,
+        waitTimeSeconds: config.waitTimeSeconds
+      },
+      interaction2
+    )
 
     logger.debug(
       {

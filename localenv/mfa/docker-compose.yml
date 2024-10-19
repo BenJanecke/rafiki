@@ -89,7 +89,6 @@ services:
 
   mfa-wallet-auth:
     hostname: mfa-wallet-auth
-    image: rafiki-auth
     build:
       context: ../..
       dockerfile: ./packages/auth/Dockerfile.dev
@@ -97,7 +96,6 @@ services:
       - type: bind
         source: ../../packages/auth/src
         target: /home/rafiki/packages/auth/src
-        read_only: true
     restart: always
     networks:
       - rafiki
@@ -126,6 +124,8 @@ services:
     restart: always
     ports:
       - "9999:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@gmail.com
       PGADMIN_DEFAULT_PASSWORD: password
@@ -327,4 +327,5 @@ services:
       - rafiki
 
 volumes:
+  pgadmin-data:
   database-data2: # named volumes can be managed easier using docker-compose
