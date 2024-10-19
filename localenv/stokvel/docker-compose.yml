@@ -7,11 +7,10 @@ services:
       context: ../..
       dockerfile: ./localenv/mock-account-servicing-entity/Dockerfile
     restart: always
-    command: pnpm run dev
     networks:
       - rafiki
     ports:
-      - '3030:80'
+      - '3030:3300'
     environment:
       LOG_LEVEL: debug
       PORT: 80
@@ -24,7 +23,7 @@ services:
       SIGNATURE_VERSION: 1
       SIGNATURE_SECRET: iyIgCprjb9uL8wFckR+pLEkJWMB7FJhgkvqhTQR/964=
       IDP_SECRET: 2pEcn2kkCclbOHQiGNEwhJ0rucATZhrA807HTm2rNXE=
-      DISPLAY_NAME: Cloud Nine Wallet
+      DISPLAY_NAME: Vote with your wallet
       DISPLAY_ICON: wallet-icon.svg
     volumes:
       - ../stokvel/seed.yml:/workspace/seed.yml
