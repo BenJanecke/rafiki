@@ -11,15 +11,15 @@ const HEADERS = {
   'Content-Type': 'application/json'
 }
 
-const CLOUD_NINE_GQL_ENDPOINT = 'http://cloud-nine-wallet-backend:3001/graphql'
-const CLOUD_NINE_WALLET_ADDRESS =
-  'https://cloud-nine-wallet-backend/accounts/gfranklin'
+const STOKVEL_GQL_ENDPOINT = 'http://stokvel-wallet-backend:3001/graphql'
+const STOKVEL_WALLET_ADDRESS =
+  'https://stokvel-wallet-backend/accounts/gfranklin'
 const HAPPY_LIFE_BANK_WALLET_ADDRESS =
   'https://happy-life-bank-backend/accounts/pfry'
 
 export function setup() {
   const c9WalletAddressesRes = http.post(
-    CLOUD_NINE_GQL_ENDPOINT,
+    STOKVEL_GQL_ENDPOINT,
     JSON.stringify({
       query: `
     query GetWalletAddresses {
@@ -38,15 +38,15 @@ export function setup() {
   )
 
   if (c9WalletAddressesRes.status !== 200) {
-    fail(`GraphQL Request failed to find ${CLOUD_NINE_WALLET_ADDRESS}`)
+    fail(`GraphQL Request failed to find ${STOKVEL_WALLET_ADDRESS}`)
   }
   const c9WalletAddresses = JSON.parse(c9WalletAddressesRes.body).data
     .walletAddresses.edges
   const c9WalletAddress = c9WalletAddresses.find(
-    (edge) => edge.node.url === CLOUD_NINE_WALLET_ADDRESS
+    (edge) => edge.node.url === STOKVEL_WALLET_ADDRESS
   ).node
   if (!c9WalletAddress) {
-    fail(`could not find wallet address: ${CLOUD_NINE_WALLET_ADDRESS}`)
+    fail(`could not find wallet address: ${STOKVEL_WALLET_ADDRESS}`)
   }
 
   return { data: { c9WalletAddress } }
@@ -63,7 +63,7 @@ export default function (data) {
   } = data
 
   const createReceiverResponse = http.post(
-    CLOUD_NINE_GQL_ENDPOINT,
+    STOKVEL_GQL_ENDPOINT,
     JSON.stringify({
       query: `
         mutation CreateReceiver($input: CreateReceiverInput!) {
@@ -99,7 +99,7 @@ export default function (data) {
     .receiver
 
   const createQuoteResponse = http.post(
-    CLOUD_NINE_GQL_ENDPOINT,
+    STOKVEL_GQL_ENDPOINT,
     JSON.stringify({
       query: `
         mutation CreateQuote($input: CreateQuoteInput!) {
@@ -131,7 +131,7 @@ export default function (data) {
   const quote = JSON.parse(createQuoteResponse.body).data.createQuote.quote
 
   http.post(
-    CLOUD_NINE_GQL_ENDPOINT,
+    STOKVEL_GQL_ENDPOINT,
     JSON.stringify({
       query: `
         mutation CreateOutgoingPayment($input: CreateOutgoingPaymentInput!) {
