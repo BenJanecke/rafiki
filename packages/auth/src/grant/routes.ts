@@ -210,7 +210,7 @@ async function createPendingGrant(
         authServerUrl: config.authServerUrl,
         waitTimeSeconds: config.waitTimeSeconds
       },
-      interaction2
+      [interaction2]
     )
 
     logger.debug(

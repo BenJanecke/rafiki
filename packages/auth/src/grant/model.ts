@@ -108,8 +108,8 @@ export function toOpenPaymentPendingGrant(
   grant: Grant,
   interaction: Interaction,
   args: ToOpenPaymentsPendingGrantArgs,
-  interaction2?: Interaction
-): OpenPaymentsPendingGrant & { interact: { redirect2?: string } } {
+  additionalInteractions: Interaction[] = []
+): OpenPaymentsPendingGrant & { interact: { redirects?: string[] } } {
   const { authServerUrl, client, waitTimeSeconds } = args
 
   const redirectUri = new URL(
@@ -119,21 +119,21 @@ export function toOpenPaymentPendingGrant(
   redirectUri.searchParams.set('clientName', client.name)
   redirectUri.searchParams.set('clientUri', client.uri)
 
-  let redirectUri2: URL | undefined = undefined
-
-  if (interaction2) {
-    redirectUri2 = new URL(
-      authServerUrl + `/interact/${interaction2.id}/${interaction2.nonce}`
-    )
-
-    redirectUri2.searchParams.set('clientName', client.name)
-    redirectUri2.searchParams.set('clientUri', client.uri)
-  }
-
   return {
     interact: {
+      redirects: [
+        redirectUri.toString(),
+        ...additionalInteractions.map((interaction) => {
+          const redirectUri = new URL(
+            authServerUrl + `/interact/${interaction.id}/${interaction.nonce}`
+          )
+
+          redirectUri.searchParams.set('clientName', client.name)
+          redirectUri.searchParams.set('clientUri', client.uri)
+          return redirectUri.toString()
+        })
+      ],
       redirect: redirectUri.toString(),
-      redirect2: redirectUri2?.toString(),
       finish: interaction.nonce
     },
     continue: {
