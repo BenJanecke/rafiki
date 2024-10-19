@@ -11,7 +11,6 @@ import {
   isInteractionWithGrant
 } from './model'
 import { GrantService } from '../grant/service'
-
 export interface InteractionService {
   getInteractionByGrant(grantId: string): Promise<InteractionWithGrant | void>
   getBySession(id: string, nonce: string): Promise<InteractionWithGrant | void>

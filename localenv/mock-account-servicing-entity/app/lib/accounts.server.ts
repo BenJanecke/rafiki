@@ -13,6 +13,9 @@ export type AccountWithBalance = {
   id: string
   path: string
   name: string
+  email?: string
+  cell?: string
+  additionalEmails?: string
   balance: string
   assetId: string
   assetCode: string
@@ -68,6 +71,9 @@ export async function getAccountWithBalance(
     return {
       id: account.id,
       name: account.name,
+      email: account.email,
+      additionalEmails: account.additionalEmails,
+      cell: account.cell,
       path: account.path,
       assetId: account.assetId,
       assetScale: account.assetScale,

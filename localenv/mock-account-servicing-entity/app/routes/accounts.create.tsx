@@ -55,6 +55,24 @@ export default function CreateAccountPage() {
                     error={response?.errors?.fieldErrors.name}
                   />
                   <Input
+                    name='additionalEmails'
+                    label='Additional verification emails'
+                    placeholder='Additional verification emails'
+                    error={response?.errors.fieldErrors.additionalEmails}
+                  />
+                  <Input
+                    name='email'
+                    label='Account email'
+                    placeholder='Account email'
+                    error={response?.errors.fieldErrors.email}
+                  />
+                  <Input
+                    name='cell'
+                    label='Account cell'
+                    placeholder='Account cell'
+                    error={response?.errors.fieldErrors.cell}
+                  />
+                  <Input
                     required
                     addOn={`${getOpenPaymentsUrl()}/accounts/`}
                     name='path'

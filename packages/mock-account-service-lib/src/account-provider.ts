@@ -2,6 +2,9 @@ interface Account {
   id: string
   name: string
   path: string
+  cell?: string
+  email?: string
+  additionalEmails?: string
   walletAddressID: string
   walletAddress: string
   debitsPending: bigint
@@ -26,7 +29,10 @@ interface AccountsServer {
     name: string,
     assetCode: string,
     assetScale: number,
-    assetId: string
+    assetId: string,
+    cell?: string,
+    email?: string,
+    additionalEmails?: string
   ): Promise<void>
   listAll(): Promise<Account[]>
   get(id: string): Promise<Account | undefined>
@@ -74,7 +80,10 @@ export class AccountProvider implements AccountsServer {
     name: string,
     assetCode: string,
     assetScale: number,
-    assetId: string
+    assetId: string,
+    cell?: string,
+    email?: string,
+    additionalEmails?: string
   ): Promise<void> {
     if (this.accounts.has(id)) {
       throw new Error('account already exists')
@@ -91,6 +100,9 @@ export class AccountProvider implements AccountsServer {
       debitsPosted: BigInt(0),
       assetCode,
       assetScale,
+      cell,
+      email,
+      additionalEmails,
       assetId
     })
   }

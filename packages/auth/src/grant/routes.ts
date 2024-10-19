@@ -10,7 +10,8 @@ import {
   toOpenPaymentsGrant,
   toOpenPaymentsGrantContinuation,
   isRevokedGrant,
-  isRejectedGrant
+  isRejectedGrant,
+  StartMethod
 } from './model'
 import { ClientService } from '../client/service'
 import { BaseService } from '../shared/baseService'
@@ -22,6 +23,7 @@ import { InteractionService } from '../interaction/service'
 import { canSkipInteraction } from './utils'
 import { GNAPErrorCode, GNAPServerRouteError } from '../shared/gnapErrors'
 import { generateRouteLogs } from '../shared/utils'
+import nodemailer from 'nodemailer'
 
 interface ServiceDependencies extends BaseService {
   grantService: GrantService
@@ -165,6 +167,16 @@ async function createApprovedGrant(
   )
 }
 
+const emailTransport = nodemailer.createTransport({
+  host: 'mailtrap',
+  port: 80,
+  secure: false, // true for port 465, false for other ports
+  auth: {
+    user: 'mailtrap',
+    pass: 'mailtrap'
+  }
+})
+
 async function createPendingGrant(
   deps: ServiceDependencies,
   ctx: CreateContext
@@ -192,26 +204,53 @@ async function createPendingGrant(
 
   try {
     const grant = await grantService.create(body, trx)
-    const [interaction, interaction2] = await Promise.all([
-      interactionService.create(grant.id, trx),
-      interactionService.create(grant.id, trx)
-    ])
+    const interaction = await interactionService.create(grant.id, trx)
+
+    if (body.interact?.start.includes(StartMethod.AdditionalEmail)) {
+      const emails: string[] = []
+
+      for (const email of emails) {
+        const interaction = await interactionService.create(grant.id, trx)
+
+        const pend = toOpenPaymentPendingGrant(grant, interaction, {
+          client,
+          authServerUrl: config.authServerUrl,
+          waitTimeSeconds: config.waitTimeSeconds
+        })
+
+        emailTransport.sendMail({
+          from: '"Open Payments!" <interledger@example.com>',
+          to: email,
+          subject: 'Please approve the following grant',
+          text: `Please approve: ${pend.interact.redirect}`,
+          html: `Please approve: ${pend.interact.redirect}`
+        })
+      }
+    }
 
     await trx.commit()
+
+    console.log(config)
 
     // TODO: brett interaction.id + interaction.nonce ussd
 
     ctx.status = 200
-    ctx.body = toOpenPaymentPendingGrant(
-      grant,
-      interaction,
-      {
-        client,
-        authServerUrl: config.authServerUrl,
-        waitTimeSeconds: config.waitTimeSeconds
-      },
-      [interaction2]
-    )
+
+    const resp = toOpenPaymentPendingGrant(grant, interaction, {
+      client,
+      authServerUrl: config.authServerUrl,
+      waitTimeSeconds: config.waitTimeSeconds
+    })
+
+    emailTransport.sendMail({
+      from: '"Open Payments!" <interledger@example.com>',
+      to: 'test@example.com',
+      subject: 'Please approve the following grant',
+      text: `Please approve: ${resp.interact.redirect}`,
+      html: `Please approve: ${resp.interact.redirect}`
+    })
+
+    ctx.body = resp
 
     logger.debug(
       {

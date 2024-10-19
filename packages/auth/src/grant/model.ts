@@ -11,7 +11,8 @@ import { AccessToken, toOpenPaymentsAccessToken } from '../accessToken/model'
 import { Interaction } from '../interaction/model'
 
 export enum StartMethod {
-  Redirect = 'redirect'
+  Redirect = 'redirect',
+  AdditionalEmail = 'additional-email'
 }
 
 export enum FinishMethod {
@@ -107,9 +108,8 @@ interface ToOpenPaymentsPendingGrantArgs {
 export function toOpenPaymentPendingGrant(
   grant: Grant,
   interaction: Interaction,
-  args: ToOpenPaymentsPendingGrantArgs,
-  additionalInteractions: Interaction[] = []
-): OpenPaymentsPendingGrant & { interact: { redirects?: string[] } } {
+  args: ToOpenPaymentsPendingGrantArgs
+): OpenPaymentsPendingGrant {
   const { authServerUrl, client, waitTimeSeconds } = args
 
   const redirectUri = new URL(
@@ -121,18 +121,6 @@ export function toOpenPaymentPendingGrant(
 
   return {
     interact: {
-      redirects: [
-        redirectUri.toString(),
-        ...additionalInteractions.map((interaction) => {
-          const redirectUri = new URL(
-            authServerUrl + `/interact/${interaction.id}/${interaction.nonce}`
-          )
-
-          redirectUri.searchParams.set('clientName', client.name)
-          redirectUri.searchParams.set('clientUri', client.uri)
-          return redirectUri.toString()
-        })
-      ],
       redirect: redirectUri.toString(),
       finish: interaction.nonce
     },

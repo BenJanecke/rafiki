@@ -114,6 +114,29 @@ export default function EditAccount() {
                       error={response?.errors.general.fieldErrors.name}
                     />
                     <Input
+                      name='additionalEmails'
+                      label='Additional verification emails'
+                      placeholder='Additional verification emails'
+                      defaultValue={account?.additionalEmails}
+                      error={
+                        response?.errors.general.fieldErrors.additionalEmails
+                      }
+                    />
+                    <Input
+                      name='email'
+                      label='Account email'
+                      placeholder='Account email'
+                      defaultValue={account?.email}
+                      error={response?.errors.general.fieldErrors.email}
+                    />
+                    <Input
+                      name='cell'
+                      label='Account cell'
+                      placeholder='Account cell'
+                      defaultValue={account?.cell}
+                      error={response?.errors.general.fieldErrors.cell}
+                    />
+                    <Input
                       disabled
                       name='path'
                       label='Wallet address'
