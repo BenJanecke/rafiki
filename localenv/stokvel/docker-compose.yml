@@ -1,7 +1,7 @@
 name: c9
 services:
   stokvel-wallet-mock-ase:
-    hostname: stokvel-wallet
+    hostname: stokvel-wallet-mock-ase
     build:
       context: ../..
       dockerfile: ./localenv/mock-account-servicing-entity/Dockerfile.dev
@@ -69,8 +69,8 @@ services:
       STREAM_SECRET: BjPXtnd00G2mRQwP/8ZpwyZASOch5sUXT5o0iR5b5wU=
       API_SECRET: iyIgCprjb9uL8wFckR+pLEkJWMB7FJhgkvqhTQR/964=
       OPEN_PAYMENTS_URL: ${STOKVEL_OPEN_PAYMENTS_URL:-http://stokvel-wallet-backend}
-      WEBHOOK_URL: http://stokvel-wallet/webhooks
-      EXCHANGE_RATES_URL: http://stokvel-wallet/rates
+      WEBHOOK_URL: http://stokvel-wallet-backend/webhooks
+      EXCHANGE_RATES_URL: http://stokvel-wallet-backend/rates
       REDIS_URL: redis://shared-redis:6379/0
       WALLET_ADDRESS_URL: ${STOKVEL_WALLET_ADDRESS_URL:-https://stokvel-wallet-backend/.well-known/pay}
       ILP_CONNECTOR_URL: ${STOKVEL_CONNECTOR_URL:-http://stokvel-wallet-backend:3002}
@@ -260,6 +260,7 @@ services:
       interval: 30s
       retries: 1
       timeout: 3s
+
   happy-life-auth:
     hostname: happy-life-bank-auth
     image: rafiki-auth

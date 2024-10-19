@@ -195,6 +195,8 @@ async function createPendingGrant(
     const interaction = await interactionService.create(grant.id, trx)
     await trx.commit()
 
+    // TODO: brett interaction.id + interaction.grant ussd
+
     ctx.status = 200
     ctx.body = toOpenPaymentPendingGrant(grant, interaction, {
       client,
@@ -332,7 +334,7 @@ async function pollGrantContinuation(
   }
 }
 
-/* 
+/*
   GNAP indicates that a grant may be continued even if it didn't require interaction.
   Rafiki only needs to continue a grant if it required an interaction, noninteractive grants immediately issue an access token without needing continuation
   so continuation only expects interactive grants to be continued.
