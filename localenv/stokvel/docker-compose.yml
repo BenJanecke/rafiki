@@ -27,8 +27,8 @@ services:
       DISPLAY_NAME: Cloud Nine Wallet
       DISPLAY_ICON: wallet-icon.svg
     volumes:
-      - ../stokvel-wallet/seed.yml:/workspace/seed.yml
-      - ../stokvel-wallet/private-key.pem:/workspace/private-key.pem
+      - ../stokvel/seed.yml:/workspace/seed.yml
+      - ../stokvel/private-key.pem:/workspace/private-key.pem
     depends_on:
       stokvel-backend:
         condition: service_healthy
@@ -129,7 +129,7 @@ services:
     ports:
       - "9999:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
       PGADMIN_DEFAULT_PASSWORD: password
 
   shared-database:
@@ -138,8 +138,8 @@ services:
     networks:
       - rafiki
     volumes:
-      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
-      - ../stokvel-wallet/dbinit.sql:/docker-entrypoint-initdb.d/init.sql
+      - database-data2:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - ../stokvel/dbinit.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - '5432:5432'
     environment:
@@ -182,4 +182,4 @@ services:
       - stokvel-backend
 
 volumes:
-  database-data: # named volumes can be managed easier using docker-compose
+  database-data2: # named volumes can be managed easier using docker-compose
