@@ -63,11 +63,13 @@ export class Grant extends BaseModel {
       }
     }
   })
+
   public access!: Access[]
   public state!: GrantState
   public finalizationReason?: GrantFinalization
   public startMethod!: StartMethod[]
   public identifier!: string
+  public approvalCount!: number
 
   public continueToken!: string
   public continueId!: string

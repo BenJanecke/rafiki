@@ -140,6 +140,15 @@ async function getByIdWithAccess(grantId: string): Promise<Grant | undefined> {
 }
 
 async function approve(grantId: string): Promise<Grant> {
+  const grant = await Grant.query().findById(grantId)
+
+  if (grant!.approvalCount < 2) {
+    // TODO: do this as a select for UPDATE to avoid race conditions
+    return Grant.query().patchAndFetchById(grantId, {
+      approvalCount: grant!.approvalCount + 1
+    })
+  }
+
   return Grant.query().patchAndFetchById(grantId, {
     state: GrantState.Approved
   })

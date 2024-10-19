@@ -4,6 +4,7 @@ exports.up = function (knex) {
     table.uuid('authServerId').notNullable()
     table.foreign('authServerId').references('authServers.id')
     table.string('continueId').nullable()
+    table.integer('approvalCount').notNullable().defaultTo(0)
     table.string('continueToken').nullable()
     table.string('accessToken').notNullable().unique()
     table.string('managementId').notNullable()
