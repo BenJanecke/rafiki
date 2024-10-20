@@ -442,14 +442,26 @@ async function finishInteraction(
     .andWhereNot({ id: interaction.id })
     .withGraphFetched('grant')
 
-  if (
-    isFinishableGrant(grant) &&
-    !interactions.find((interaction) =>
+  console.log(
+    interactions.find((interaction) =>
       [InteractionState.Pending, InteractionState.Denied].includes(
         interaction.state
       )
     )
+  )
+
+  if (
+    interactions.filter((interaction) =>
+      [InteractionState.Pending, InteractionState.Denied].includes(
+        interaction.state
+      )
+    ).length > 0
   ) {
+    ctx.status = 202
+    return
+  }
+
+  if (isFinishableGrant(grant)) {
     await handleFinishableGrant(deps, ctx, interaction, grant)
   } else {
     await handleUnfinishableGrant(deps, ctx, interaction, grant)
