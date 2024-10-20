@@ -21,6 +21,7 @@ import {
 import { createInteractionService } from './interaction/service'
 import { getTokenIntrospectionOpenAPI } from 'token-introspection'
 import { Redis } from 'ioredis'
+import nodemailer from 'nodemailer'
 
 const container = initIocContainer(Config)
 const app = new App(container)
@@ -126,6 +127,23 @@ export function initIocContainer(
   )
 
   container.singleton(
+    'emailTransport',
+    async (deps: IocContract<AppServices>) => {
+      const config = await deps.use('config')
+
+      return nodemailer.createTransport({
+        host: config.emailHost,
+        port: 587,
+        secure: false, // true for port 465, false for other ports
+        auth: {
+          user: config.emailUser,
+          pass: config.emailPass
+        }
+      })
+    }
+  )
+
+  container.singleton(
     'interactionService',
     async (deps: IocContract<AppServices>) => {
       return createInteractionService({
@@ -145,7 +163,8 @@ export function initIocContainer(
       accessService: await deps.use('accessService'),
       interactionService: await deps.use('interactionService'),
       logger: await deps.use('logger'),
-      config: await deps.use('config')
+      config: await deps.use('config'),
+      emailTransport: await deps.use('emailTransport')
     })
   })
 

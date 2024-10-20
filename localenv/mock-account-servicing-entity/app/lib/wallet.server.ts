@@ -8,18 +8,25 @@ export type CreateWalletParams = {
   name: string
   assetId: string
   accountId: string
+  additionalProperties?: {
+    key: string
+    value: string
+    visibleInOpenPayments: boolean
+  }[]
 }
 
 export async function createWallet({
   name,
   path,
   assetId,
-  accountId
+  accountId,
+  additionalProperties
 }: CreateWalletParams): Promise<void> {
   const walletAddress = await createWalletAddress(
     name,
     `${getOpenPaymentsUrl()}/${path}`,
-    assetId
+    assetId,
+    additionalProperties
   )
 
   await mockAccounts.setWalletAddress(

@@ -1,5 +1,6 @@
 import { AccountProvider } from 'mock-account-service-lib'
 import { v4 as uuid } from 'uuid'
+import { updateWalletAddress } from './requesters'
 
 export type AccountWithAsset = {
   path: string
@@ -45,13 +46,21 @@ export async function createAccount({
 
 export async function updateAccount({
   id,
-  name
+  acc
 }: {
   id: string
-  name: string
+  acc: Partial<AccountWithBalance>
 }): Promise<string | undefined> {
   try {
-    await mockAccounts.set(id, name)
+    await mockAccounts.patch(id, acc)
+    console.log(acc)
+    await updateWalletAddress(acc.path!, [
+      {
+        key: 'additionalEmails',
+        value: acc.additionalEmails!,
+        visibleInOpenPayments: true
+      }
+    ])
 
     return id
   } catch (err) {

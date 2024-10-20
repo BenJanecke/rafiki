@@ -39,6 +39,9 @@ dotenv.config({
 
 export const Config = {
   logLevel: envString('LOG_LEVEL', 'info'),
+  emailHost: envString('EMAIL_HOST', 'sandbox.smtp.mailtrap.io'),
+  emailUser: process.env.EMAIL_USER as string,
+  emailPass: process.env.EMAIL_PASS as string,
   adminPort: envInt('ADMIN_PORT', 3003),
   authPort: envInt('AUTH_PORT', 3006),
   interactionPort: envInt('INTERACTION_PORT', 3009),

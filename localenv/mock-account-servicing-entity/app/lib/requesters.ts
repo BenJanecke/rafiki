@@ -81,7 +81,12 @@ export async function depositAssetLiquidity(
 export async function createWalletAddress(
   accountName: string,
   accountUrl: string,
-  assetId: string
+  assetId: string,
+  additionalProperties: {
+    key: string
+    value: string
+    visibleInOpenPayments: boolean
+  }[] = []
 ): Promise<WalletAddress> {
   const createWalletAddressMutation = gql`
     mutation CreateWalletAddress($input: CreateWalletAddressInput!) {
@@ -90,6 +95,7 @@ export async function createWalletAddress(
           id
           url
           publicName
+          additionalProperties
         }
       }
     }
@@ -98,7 +104,52 @@ export async function createWalletAddress(
     assetId,
     url: accountUrl,
     publicName: accountName,
-    additionalProperties: []
+    additionalProperties
+  }
+
+  return apolloClient
+    .mutate({
+      mutation: createWalletAddressMutation,
+      variables: {
+        input: createWalletAddressInput
+      }
+    })
+    .then(({ data }) => {
+      console.log(data)
+
+      if (!data.createWalletAddress.walletAddress) {
+        throw new Error('Data was empty')
+      }
+
+      return data.createWalletAddress.walletAddress
+    })
+}
+
+export async function updateWalletAddress(
+  id: string,
+  additionalProperties: {
+    key: string
+    value: string
+    visibleInOpenPayments: boolean
+  }[] = []
+): Promise<WalletAddress> {
+  const createWalletAddressMutation = gql`
+    mutation UpdateWalletAddress($input: UpdateWalletAddressInput!) {
+      updateWalletAddress(input: $input) {
+        walletAddress {
+          id
+          additionalProperties {
+            key
+            value
+            visibleInOpenPayments
+          }
+        }
+      }
+    }
+  `
+  const createWalletAddressInput = {
+    id,
+    additionalProperties
   }
 
   return apolloClient

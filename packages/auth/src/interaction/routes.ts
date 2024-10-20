@@ -434,7 +434,22 @@ async function finishInteraction(
   }
 
   const { grant } = interaction
-  if (isFinishableGrant(grant)) {
+
+  const interactions = await await Interaction.query()
+    .where({
+      grantId: grant.id
+    })
+    .andWhereNot({ id: interaction.id })
+    .withGraphFetched('grant')
+
+  if (
+    isFinishableGrant(grant) &&
+    !interactions.find((interaction) =>
+      [InteractionState.Pending, InteractionState.Denied].includes(
+        interaction.state
+      )
+    )
+  ) {
     await handleFinishableGrant(deps, ctx, interaction, grant)
   } else {
     await handleUnfinishableGrant(deps, ctx, interaction, grant)

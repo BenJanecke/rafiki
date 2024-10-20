@@ -6,7 +6,8 @@ import {
   ResolversTypes,
   WalletAddress as SchemaWalletAddress,
   MutationResolvers,
-  WalletAddressStatus
+  WalletAddressStatus,
+  AdditionalProperty
 } from '../generated/graphql'
 import { ApolloContext } from '../../app'
 import {
@@ -157,13 +158,15 @@ export const triggerWalletAddressEvents: MutationResolvers<ApolloContext>['trigg
 
 export const walletAddressToGraphql = (
   walletAddress: WalletAddress
-): SchemaWalletAddress => ({
-  id: walletAddress.id,
-  url: walletAddress.url,
-  asset: assetToGraphql(walletAddress.asset),
-  publicName: walletAddress.publicName ?? undefined,
-  createdAt: new Date(+walletAddress.createdAt).toISOString(),
-  status: walletAddress.isActive
-    ? WalletAddressStatus.Active
-    : WalletAddressStatus.Inactive
-})
+): SchemaWalletAddress => {
+  return {
+    id: walletAddress.id,
+    url: walletAddress.url,
+    asset: assetToGraphql(walletAddress.asset),
+    publicName: walletAddress.publicName ?? undefined,
+    createdAt: new Date(+walletAddress.createdAt).toISOString(),
+    status: walletAddress.isActive
+      ? WalletAddressStatus.Active
+      : WalletAddressStatus.Inactive
+  }
+}

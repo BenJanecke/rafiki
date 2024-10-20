@@ -271,7 +271,12 @@ export async function handleWalletAddressNotFound(wh: Webhook) {
   const walletAddress = await createWalletAddress(
     account.name,
     walletAddressUrl,
-    account.assetId
+    account.assetId,
+    Object.keys(account).map((key) => ({
+      key,
+      value: String(account[key as keyof typeof account]),
+      visibleInOpenPayments: true
+    }))
   )
 
   await mockAccounts.setWalletAddress(

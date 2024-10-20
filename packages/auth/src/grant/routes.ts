@@ -23,7 +23,8 @@ import { InteractionService } from '../interaction/service'
 import { canSkipInteraction } from './utils'
 import { GNAPErrorCode, GNAPServerRouteError } from '../shared/gnapErrors'
 import { generateRouteLogs } from '../shared/utils'
-import nodemailer from 'nodemailer'
+import { WalletAddress } from '@interledger/open-payments'
+import { Transporter } from 'nodemailer'
 
 interface ServiceDependencies extends BaseService {
   grantService: GrantService
@@ -32,6 +33,7 @@ interface ServiceDependencies extends BaseService {
   accessService: AccessService
   interactionService: InteractionService
   config: IAppConfig
+  emailTransport: Transporter
 }
 
 type GrantRequest<BodyT = never, QueryT = ParsedUrlQuery> = Exclude<
@@ -75,7 +77,8 @@ export function createGrantRoutes({
   accessService,
   interactionService,
   logger,
-  config
+  config,
+  emailTransport
 }: ServiceDependencies): GrantRoutes {
   const log = logger.child(
     {
@@ -97,6 +100,7 @@ export function createGrantRoutes({
     accessService,
     interactionService,
     logger: log,
+    emailTransport,
     config
   }
   return {
@@ -167,22 +171,14 @@ async function createApprovedGrant(
   )
 }
 
-const emailTransport = nodemailer.createTransport({
-  host: 'mailtrap',
-  port: 80,
-  secure: false, // true for port 465, false for other ports
-  auth: {
-    user: 'mailtrap',
-    pass: 'mailtrap'
-  }
-})
-
 async function createPendingGrant(
   deps: ServiceDependencies,
   ctx: CreateContext
 ): Promise<void> {
   const { body } = ctx.request
-  const { grantService, interactionService, config, logger } = deps
+
+  const { grantService, interactionService, config, logger, emailTransport } =
+    deps
   if (!body.interact) {
     throw new GNAPServerRouteError(
       400,
@@ -192,6 +188,7 @@ async function createPendingGrant(
   }
 
   const client = await deps.clientService.get(body.client)
+
   if (!client) {
     throw new GNAPServerRouteError(
       400,
@@ -206,31 +203,42 @@ async function createPendingGrant(
     const grant = await grantService.create(body, trx)
     const interaction = await interactionService.create(grant.id, trx)
 
+    // Fetch wallet address for additional properties
+    // const openPaymentsClient = await ctx.container.use('openPaymentsClient')
+    // const walletAddress = await openPaymentsClient.walletAddress.get({
+    //   url: body.client
+    // })
+
     if (body.interact?.start.includes(StartMethod.AdditionalEmail)) {
-      const emails: string[] = []
+      // This would ideally come from addtional properties
+      const emails: string[] = ['b@example.com']
 
-      for (const email of emails) {
-        const interaction = await interactionService.create(grant.id, trx)
-
-        const pend = toOpenPaymentPendingGrant(grant, interaction, {
-          client,
-          authServerUrl: config.authServerUrl,
-          waitTimeSeconds: config.waitTimeSeconds
+      const mails = await Promise.all(
+        emails.map(async (email) => {
+          const interatcion = await interactionService.create(grant.id, trx)
+          return {
+            email,
+            grant: toOpenPaymentPendingGrant(grant, interatcion, {
+              client,
+              authServerUrl: config.authServerUrl,
+              waitTimeSeconds: config.waitTimeSeconds
+            })
+          }
         })
+      )
 
+      for (const mail of mails) {
         emailTransport.sendMail({
           from: '"Open Payments!" <interledger@example.com>',
-          to: email,
+          to: mail.email,
           subject: 'Please approve the following grant',
-          text: `Please approve: ${pend.interact.redirect}`,
-          html: `Please approve: ${pend.interact.redirect}`
+          text: `Please approve: ${mail.grant.interact.redirect}`,
+          html: `Please approve: <a href="${mail.grant.interact.redirect}">here</a>`
         })
       }
     }
 
     await trx.commit()
-
-    console.log(config)
 
     // TODO: brett interaction.id + interaction.nonce ussd
 
@@ -244,10 +252,11 @@ async function createPendingGrant(
 
     emailTransport.sendMail({
       from: '"Open Payments!" <interledger@example.com>',
-      to: 'test@example.com',
+      // This would ideally come from addtional properties
+      to: 'a@example.com',
       subject: 'Please approve the following grant',
       text: `Please approve: ${resp.interact.redirect}`,
-      html: `Please approve: ${resp.interact.redirect}`
+      html: `Please approve: <a href="${resp.interact.redirect}">here</a>`
     })
 
     ctx.body = resp

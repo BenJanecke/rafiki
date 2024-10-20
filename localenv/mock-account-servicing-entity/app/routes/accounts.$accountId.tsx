@@ -300,7 +300,8 @@ export async function action({ request }: ActionFunctionArgs) {
       }
 
       const accountId = await updateAccount({
-        ...result.data
+        id: result.data.id,
+        acc: result.data
       })
 
       if (!accountId) {

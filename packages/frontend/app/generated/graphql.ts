@@ -2689,7 +2689,7 @@ export type GetWalletAddressQueryVariables = Exact<{
 }>;
 
 
-export type GetWalletAddressQuery = { __typename?: 'Query', walletAddress?: { __typename?: 'WalletAddress', id: string, url: string, publicName?: string | null, status: WalletAddressStatus, createdAt: string, liquidity?: bigint | null, asset: { __typename?: 'Asset', id: string, code: string, scale: number, withdrawalThreshold?: bigint | null } } | null };
+export type GetWalletAddressQuery = { __typename?: 'Query', walletAddress?: { __typename?: 'WalletAddress', id: string, url: string, publicName?: string | null, status: WalletAddressStatus, createdAt: string, liquidity?: bigint | null, additionalProperties?: Array<{ __typename?: 'AdditionalProperty', key: string, value: string, visibleInOpenPayments: boolean } | null> | null, asset: { __typename?: 'Asset', id: string, code: string, scale: number, withdrawalThreshold?: bigint | null } } | null };
 
 export type ListWalletAddresssQueryVariables = Exact<{
   after?: InputMaybe<Scalars['String']['input']>;

@@ -27,6 +27,7 @@ services:
     volumes:
       - ../mfa/seed.yml:/workspace/seed.yml
       - ../mfa/private-key.pem:/workspace/private-key.pem
+      - ../mock-account-servicing-entity:/home/rafiki/localenv/mock-account-servicing-entity
     depends_on:
       mfa-wallet-backend:
         condition: service_healthy
@@ -41,7 +42,6 @@ services:
       - type: bind
         source: ../../packages/backend/src
         target: /home/rafiki/packages/backend/src
-        read_only: true
     restart: always
     privileged: true
     ports:
@@ -52,6 +52,9 @@ services:
     networks:
       - rafiki
     environment:
+      EMAIL_HOST: ${EMAIL_HOST:-sandbox.smtp.mailtrap.io}
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
       NODE_ENV: ${NODE_ENV:-development}
       INSTANCE_NAME: mfa
       TRUST_PROXY: ${TRUST_PROXY}
@@ -105,6 +108,9 @@ services:
       - "9230:9229"
       - '3009:3009'
     environment:
+      EMAIL_HOST: ${EMAIL_HOST:-sandbox.smtp.mailtrap.io}
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
       NODE_ENV: ${NODE_ENV:-development}
       TRUST_PROXY: ${TRUST_PROXY}
       AUTH_DATABASE_URL: postgresql://mfa_wallet_auth:mfa_wallet_auth@shared-database/mfa_wallet_auth
@@ -160,7 +166,6 @@ services:
       - type: bind
         source: ../../packages/frontend/app
         target: /home/rafiki/packages/frontend/app
-        read_only: true
     restart: always
     networks:
       - rafiki
@@ -219,7 +224,6 @@ services:
       - type: bind
         source: ../../packages/backend/src
         target: /home/rafiki/packages/backend/src
-        read_only: true
     restart: always
     privileged: true
     ports:
@@ -272,7 +276,6 @@ services:
       - type: bind
         source: ../../packages/auth/src
         target: /home/rafiki/packages/auth/src
-        read_only: true
     networks:
       - rafiki
     ports:
@@ -281,6 +284,9 @@ services:
       - '9232:9229'
       - '4009:3009'
     environment:
+      EMAIL_HOST: ${EMAIL_HOST:-sandbox.smtp.mailtrap.io}
+      EMAIL_USER: ${EMAIL_USER}
+      EMAIL_PASS: ${EMAIL_PASS}
       NODE_ENV: development
       AUTH_DATABASE_URL: postgresql://happy_life_bank_auth:happy_life_bank_auth@shared-database/happy_life_bank_auth
       AUTH_SERVER_URL: ${HAPPY_LIFE_BANK_AUTH_SERVER_DOMAIN:-http://localhost:4006}
@@ -300,7 +306,6 @@ services:
       - type: bind
         source: ../../packages/frontend/app
         target: /home/rafiki/packages/frontend/app
-        read_only: true
     restart: always
     networks:
       - rafiki
@@ -319,13 +324,6 @@ services:
     depends_on:
       - mfa-wallet-admin
       - happy-life-backend
-
-  mailtrap:
-    image: eaudeweb/mailtrap
-    ports:
-      - "9991:80"
-    networks:
-      - rafiki
 
 volumes:
   pgadmin-data:

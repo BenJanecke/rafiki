@@ -28,6 +28,10 @@ accounts:
     initialBalance: 40000000
     brunoEnvVar: gfranklinWalletAddress
     assetCode: USD
+    additionalProperties:
+      - key: 'additionalEmails'
+        value: 'a@example.com,b@example.com,c@example.com'
+        visibleInOpenPayments: true
   - name: 'Bert Hamchest'
     id: a9adbe1a-df31-4766-87c9-d2cb2e636a9b
     initialBalance: 40000000

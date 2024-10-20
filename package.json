@@ -18,7 +18,7 @@
     "check:prettier": "prettier --check .",
     "clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
     "build": "tsc --build",
-    "localenv:compose:mfa": "docker compose -f ./localenv/mfa/docker-compose.yml -f ./localenv/merged/docker-compose.yml -f ./localenv/tigerbeetle/docker-compose.yml --env-file ./localenv/tigerbeetle/.env.tigerbeetle",
+    "localenv:compose:mfa": "docker compose -f ./localenv/mfa/docker-compose.yml --env-file ./localenv/mfa/.env -f ./localenv/merged/docker-compose.yml -f ./localenv/tigerbeetle/docker-compose.yml --env-file ./localenv/tigerbeetle/.env.tigerbeetle",
     "localenv:compose:psql": "docker compose -f ./localenv/cloud-nine-wallet/docker-compose.yml -f ./localenv/happy-life-bank/docker-compose.yml -f ./localenv/merged/docker-compose.yml",
     "localenv:compose": "docker compose -f ./localenv/cloud-nine-wallet/docker-compose.yml -f ./localenv/happy-life-bank/docker-compose.yml -f ./localenv/merged/docker-compose.yml -f ./localenv/tigerbeetle/docker-compose.yml --env-file ./localenv/tigerbeetle/.env.tigerbeetle",
     "localenv:compose:psql:telemetry": "docker compose -f ./localenv/cloud-nine-wallet/docker-compose.yml -f ./localenv/happy-life-bank/docker-compose.yml -f ./localenv/merged/docker-compose.yml -f ./localenv/telemetry/docker-compose.yml",

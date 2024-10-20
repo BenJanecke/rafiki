@@ -194,7 +194,7 @@ export type external = {
          */
         "interact-request": {
           /** @description Indicates how the client instance can start an interaction. */
-          start: "redirect"[];
+          start: ("redirect" | "additional-email")[];
           /** @description Indicates how the client instance can receive an indication that interaction has finished at the AS. */
           finish?: {
             /**

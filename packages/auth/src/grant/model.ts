@@ -70,7 +70,6 @@ export class Grant extends BaseModel {
   public finalizationReason?: GrantFinalization
   public startMethod!: StartMethod[]
   public identifier!: string
-  public approvalCount!: number
 
   public continueToken!: string
   public continueId!: string

@@ -30,6 +30,11 @@ export const getWalletAddress = async (args: QueryWalletAddressArgs) => {
           status
           createdAt
           liquidity
+          additionalProperties {
+            key
+            value
+            visibleInOpenPayments
+          }
           asset {
             id
             code
