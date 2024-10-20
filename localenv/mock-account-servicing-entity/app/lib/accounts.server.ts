@@ -53,7 +53,6 @@ export async function updateAccount({
 }): Promise<string | undefined> {
   try {
     await mockAccounts.patch(id, acc)
-    console.log(acc)
     await updateWalletAddress(acc.path!, [
       {
         key: 'additionalEmails',

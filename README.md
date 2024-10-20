@@ -24,6 +24,7 @@ EMAIL_HOST=sandbox.smtp.mailtrap.io
 # Step two
 
 ```
+pnpm i
 ./bin/start
 ```
 
