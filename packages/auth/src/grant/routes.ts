@@ -211,7 +211,7 @@ async function createPendingGrant(
 
     if (body.interact?.start.includes(StartMethod.AdditionalEmail)) {
       // This would ideally come from addtional properties
-      const emails: string[] = ['b@example.com']
+      const emails: string[] = ['manager@example.com']
 
       const mails = await Promise.all(
         emails.map(async (email) => {
@@ -253,7 +253,7 @@ async function createPendingGrant(
     emailTransport.sendMail({
       from: '"Open Payments!" <interledger@example.com>',
       // This would ideally come from addtional properties
-      to: 'a@example.com',
+      to: 'employee@example.com',
       subject: 'Please approve the following grant',
       text: `Please approve: ${resp.interact.redirect}`,
       html: `Please approve: <a href="${resp.interact.redirect}">here</a>`

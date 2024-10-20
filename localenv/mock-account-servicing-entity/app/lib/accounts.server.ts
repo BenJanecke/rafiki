@@ -53,13 +53,13 @@ export async function updateAccount({
 }): Promise<string | undefined> {
   try {
     await mockAccounts.patch(id, acc)
-    await updateWalletAddress(acc.path!, [
-      {
-        key: 'additionalEmails',
-        value: acc.additionalEmails!,
-        visibleInOpenPayments: true
-      }
-    ])
+    // await updateWalletAddress(acc.path!, [
+    //   {
+    //     key: 'additionalEmails',
+    //     value: acc.additionalEmails!,
+    //     visibleInOpenPayments: true
+    //   }
+    // ])
 
     return id
   } catch (err) {
