@@ -95,7 +95,11 @@ export async function createWalletAddress(
           id
           url
           publicName
-          additionalProperties
+          additionalProperties {
+            key
+            value
+            visibleInOpenPayments
+          }
         }
       }
     }
