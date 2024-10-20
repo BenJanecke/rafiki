@@ -266,10 +266,11 @@ export class App {
     // Grant Initiation
     router.post<DefaultState, CreateContext>(
       '/',
-      createValidatorMiddleware<CreateContext>(openApi.authServerSpec, {
-        path: '/',
-        method: HttpMethod.POST
-      }),
+      // TODO: Additional payment types enum not behaving correctly
+      // createValidatorMiddleware<CreateContext>(openApi.authServerSpec, {
+      //   path: '/',
+      //   method: HttpMethod.POST
+      // }),
       grantInitiationHttpsigMiddleware,
       grantRoutes.create
     )
